@@ -268,7 +268,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 7px;
       margin-bottom: 2px;
       transform: translateZ(25px);
     }
@@ -708,31 +708,6 @@
       transform: scale(1.02);
     }
 
-    .badges-container {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      padding: 3px 5px;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
-    }
-
-    .badge-icon {
-      width: 18px;
-      height: 18px;
-      object-fit: contain;
-      display: block;
-      transition: transform 0.2s ease, filter 0.2s ease;
-    }
-
-    .badge-icon:hover {
-      transform: scale(1.2);
-      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
-    }
-
     .dc-modal-status-text, .tg-modal-status-text {
       font-size: 12px;
       color: rgba(255, 255, 255, 0.65);
@@ -1045,7 +1020,7 @@
 
         <a class="link link-guns" href="https://guns.lol/kje" target="_blank" rel="noopener">
           <div class="icon-wrapper">
-            <img src="https://cdn.discordapp.com/attachments/1547542929449553920/1548094602400235530/transparent_1.png?ex=6aa72073&is=6aa5cef3&hm=24efc70c25e421b812e25b714dfa76e8a8cc7427afd627e086796f13ac2f0aed&=&quality=lossless">
+            <img src="https://cdn.discordapp.com/attachments/1547542929449553920/1548094602400235530/transparent_1.png?ex=6aa72073&is=6aa5cef3&hm=24efc70c25e421b812e25b714dfa76e8a8cc7427afd627e086796f13ac2f0aed&=&quality=lossless" alt="guns.lol icon">
           </div>
           <span class="link-text">guns.lol</span>
         </a>
@@ -1071,9 +1046,9 @@
         <div class="dc-status-indicator offline" id="dcModalStatusDot"></div>
       </div>
       
-      <div lass="dc-user-row">
+      <div class="dc-user-row">
         <div class="dc-modal-username" id="dcModalUsername">Loading...</div>
-        
+      </div>
 
       <div class="dc-modal-status-text" id="dcModalStatusText">offline</div>
 
@@ -1248,7 +1223,7 @@
     $$(".link, .confirm-actions button, .avatar, .pfp-close-btn, " +
       ".redirect-cancel-btn, .dc-modal-close, .dc-add-btn, .tg-modal-close, " +
       ".tg-add-btn, .tg-avatar-wrap, .dc-avatar-wrap, .dc-modal-username, " +
-      ".tg-modal-username, .ctx-item, .badge-icon").forEach(el => {
+      ".tg-modal-username, .ctx-item").forEach(el => {
       el.addEventListener("mouseenter", () => {
         cursor.style.width = "24px";
         cursor.style.height = "24px";
