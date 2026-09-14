@@ -989,7 +989,7 @@
 
   <div id="intro">
     <div class="enter-wrapper">
-      <div class="enter-text" id="line1">first made by risk</div>
+      <div class="enter-text" id="line1">made by risk</div>
       <div class="enter-text" id="line2">dm me on discord for commissions</div>
       <div class="enter-text">
         <span class="typing" id="typing"></span>
@@ -1177,7 +1177,6 @@
                 const clickTextEl = typing.parentElement;
                 clickTextEl.classList.add("visible");
                 typeText();
-                canClick = true;
               }, 600);
             }, 1800);
           }, 600);
@@ -1188,7 +1187,11 @@
     startIntroSequence();
 
     function typeText() {
-      if (index >= text.length) return;
+      if (index >= text.length) {
+        // Finished typing "click to enter", now allow clicking to enter the site
+        canClick = true;
+        return;
+      }
       typing.textContent = text.substring(0, index + 1);
       index++;
       setTimeout(typeText, 65 + Math.random() * 55);
@@ -1237,7 +1240,7 @@
       }, 150);
     }
 
-    document.addEventListener("click", enterSite, { once: true });
+    document.addEventListener("click", enterSite);
 
     let mouseX = 0;
     let mouseY = 0;
