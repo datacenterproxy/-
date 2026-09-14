@@ -160,6 +160,10 @@
       user-select: none;
       transform: translateY(0);
       transition: transform .8s ease, opacity .8s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
     }
 
     #intro.hidden .enter-wrapper {
@@ -173,6 +177,12 @@
       color: rgba(255,255,255,.9);
       white-space: nowrap;
       min-width: 150px;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .enter-text.visible {
+      opacity: 1;
     }
 
     .typing {
@@ -979,6 +989,8 @@
 
   <div id="intro">
     <div class="enter-wrapper">
+      <div class="enter-text" id="line1">first made by risk</div>
+      <div class="enter-text" id="line2">dm me on discord for commissions</div>
       <div class="enter-text">
         <span class="typing" id="typing"></span>
       </div>
@@ -1132,6 +1144,8 @@
 
     const intro = $("#intro");
     const typing = $("#typing");
+    const line1 = $("#line1");
+    const line2 = $("#line2");
     const card = $("#card");
     const video = $("#backgroundVideo");
     const cursor = $("#cursor");
@@ -1142,6 +1156,36 @@
     const text = "click to enter";
     let index = 0;
     let entered = false;
+    let canClick = false;
+
+    // Sequence for intro texts
+    function startIntroSequence() {
+      setTimeout(() => {
+        line1.classList.add("visible");
+        setTimeout(() => {
+          line1.style.transition = "opacity 0.6s ease";
+          line1.style.opacity = "0";
+          setTimeout(() => {
+            line1.remove();
+            line2.classList.add("visible");
+            setTimeout(() => {
+              line2.style.transition = "opacity 0.6s ease";
+              line2.style.opacity = "0";
+              setTimeout(() => {
+                line2.remove();
+                // Finally show "click to enter" and enable clicking
+                const clickTextEl = typing.parentElement;
+                clickTextEl.classList.add("visible");
+                typeText();
+                canClick = true;
+              }, 600);
+            }, 1800);
+          }, 600);
+        }, 1800);
+      }, 350);
+    }
+
+    startIntroSequence();
 
     function typeText() {
       if (index >= text.length) return;
@@ -1149,8 +1193,6 @@
       index++;
       setTimeout(typeText, 65 + Math.random() * 55);
     }
-
-    setTimeout(typeText, 350);
 
     function typeProfileName(name, done) {
       let i = 0;
@@ -1178,7 +1220,7 @@
     }
 
     async function enterSite() {
-      if (entered) return;
+      if (!canClick || entered) return;
       entered = true;
 
       try {
@@ -1292,8 +1334,6 @@
       confirmBox.style.opacity = "0";
       confirmBox.style.pointerEvents = "none";
       
-      // Directly assign window.location.href to guarantee mobile browsers 
-      // navigate immediately without blocking async popup timers.
       window.location.href = pendingUrl;
     });
 
@@ -1567,4 +1607,3 @@
   </script>
 </body>
 </html>
-
