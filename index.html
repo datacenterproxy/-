@@ -1003,7 +1003,7 @@
         <button type="button" class="link link-discord" id="discordLinkBtn" data-href="https://discord.com/users/1547303503213367297">
           <div class="icon-wrapper">
             <svg viewBox="0 0 127.14 96.36" fill="#5865F2">
-              <path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.91-72.14zM42.45 65.69c-6.22 0-11.33-5.71-11.33-12.73s5-12.73 11.33-12.73c6.38 0 11.45 5.76 11.33 12.73 0 7.02-4.95 12.73-11.33 12.73zm42.24 0c-6.22 0-11.33-5.71-11.33-12.73s5-12.73 11.33-12.73c6.38 0 11.45 5.76 11.33 12.73 0 7.02-4.95 12.73-11.33 12.73z"/>
+              <path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.91-72.14zM42.45 65.69c-6.22 0-11.33-5.71-11.33-12.73s5-12.73 11.33-12.73c6.38 0 11.45 5.76 11.33 12.73 0 7.02-4.95 12.73-11.33 12.73zm42.24 0c-6.22 0-11.33-5.71-11.33-12.73s5-12.73 11.33-12.73c6.38 0 11.45 5.76 11.33 12.73 0 7.02-4.95 12.73-11.33 12.73 z"/>
             </svg>
           </div>
           <span class="link-text">Discord</span>
@@ -1119,7 +1119,6 @@
 
     const viewCount = $("#viewCount");
 
-    // speriamo funziona diahane
     fetch("https://countapi.mileshilliard.com/api/v1/hit/risk_unique_site_views")
       .then(res => res.json())
       .then(data => {
@@ -1250,9 +1249,7 @@
     const continueButton = $("#continueButton");
 
     let pendingUrl = null;
-    let hasConfirmedLeaving = false;
     let isRedirecting = false;
-    let redirectTimer = null;
 
     function triggerRedirectPrompt(url) {
       pendingUrl = url;
@@ -1264,14 +1261,13 @@
 
     $$('a.link').forEach(link => {
       link.addEventListener("click", event => {
-        if (hasConfirmedLeaving || isRedirecting) return;
+        if (isRedirecting) return;
         event.preventDefault();
         triggerRedirectPrompt(link.href);
       });
     });
 
     function resetConfirmationState() {
-      if (redirectTimer) clearInterval(redirectTimer);
       isRedirecting = false;
       pendingUrl = null;
       redirectWrapper.classList.remove("visible");
@@ -1295,27 +1291,10 @@
       isRedirecting = true;
       confirmBox.style.opacity = "0";
       confirmBox.style.pointerEvents = "none";
-
-      let count = 3;
-      redirectText.textContent = `redirecting in ${count}...`;
-      setTimeout(() => redirectWrapper.classList.add("visible"), 100);
-
-      redirectTimer = setInterval(() => {
-        count--;
-        if (count > 0) {
-          redirectText.textContent = `redirecting in ${count}...`;
-          return;
-        }
-
-        clearInterval(redirectTimer);
-        hasConfirmedLeaving = true;
-        window.open(pendingUrl, "_blank", "noopener");
-
-        setTimeout(() => {
-          resetConfirmationState();
-          hasConfirmedLeaving = false;
-        }, 300);
-      }, 1000);
+      
+      // Directly assign window.location.href to guarantee mobile browsers 
+      // navigate immediately without blocking async popup timers.
+      window.location.href = pendingUrl;
     });
 
     confirmOverlay.addEventListener("click", event => {
@@ -1585,9 +1564,7 @@
     setupTilt("#card", 16, 1.025);
     setupTilt("#dcCard", 14, 1.02);
     setupTilt("#tgCard", 14, 1.02);
- </script>
-
-
-</head>
+  </script>
 </body>
 </html>
+
