@@ -101,7 +101,8 @@
       pointer-events: none;
       transform: translate(-50%, -50%);
       filter: drop-shadow(0 0 2px rgba(255,255,255,.08));
-      transition: width .15s ease, height .15s ease, filter .15s ease;
+      transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1), height 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+      will-change: width, height;
     }
 
     #cursor img {
@@ -113,8 +114,8 @@
 
     .cursor-glow {
       position: fixed;
-      width: 28px;
-      height: 28px;
+      width: 36px;
+      height: 36px;
       left: 0;
       top: 0;
       z-index: 99998;
@@ -124,10 +125,11 @@
       background:
         radial-gradient(
           circle,
-          rgba(255,255,255,.03),
-          transparent 60%
+          rgba(255,255,255,.04),
+          transparent 70%
         );
-      filter: blur(2px);
+      filter: blur(4px);
+      will-change: left, top;
     }
 
     #intro {
@@ -141,10 +143,10 @@
       -webkit-backdrop-filter: blur(60px) saturate(180%);
       opacity: 1;
       transition:
-        opacity 1s ease,
-        visibility 1s ease,
-        backdrop-filter 1.2s ease,
-        -webkit-backdrop-filter 1.2s ease;
+        opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+        backdrop-filter 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+        -webkit-backdrop-filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     #intro.hidden {
@@ -159,16 +161,32 @@
       text-align: center;
       user-select: none;
       transform: translateY(0);
-      transition: transform .8s ease, opacity .8s ease;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 12px;
+      padding: 0 20px;
     }
 
     #intro.hidden .enter-wrapper {
-      transform: translateY(-10px);
+      transform: translateY(-12px);
       opacity: 0;
+    }
+
+    .intro-fade-text {
+      font-size: 17px;
+      letter-spacing: .8px;
+      color: rgba(255,255,255,.9);
+      position: absolute;
+      opacity: 0;
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+
+    .intro-fade-text.active {
+      opacity: 1;
     }
 
     .enter-text {
@@ -176,13 +194,20 @@
       letter-spacing: .8px;
       color: rgba(255,255,255,.9);
       white-space: nowrap;
-      min-width: 150px;
       opacity: 0;
-      transition: opacity 0.6s ease;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .enter-text.visible {
       opacity: 1;
+    }
+
+    .volume-warning-intro {
+      font-size: 14px;
+      letter-spacing: .5px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 4px;
+      display: none;
     }
 
     .typing {
@@ -202,7 +227,7 @@
     }
 
     .card-wrapper {
-      perspective: 1000px;
+      perspective: 1200px;
       z-index: 10;
       display: flex;
       justify-content: center;
@@ -211,7 +236,6 @@
       height: 100%;
     }
 
-    /* CLEAR PROFILE CARD */
     .card {
       position: relative;
       width: min(430px, calc(100vw - 32px));
@@ -224,8 +248,8 @@
       box-shadow: none;
       text-align: center;
       opacity: 0;
-      transform: scale(0.95);
-      transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform 1s cubic-bezier(.16, 1, .3, 1);
+      transform: scale(0.92);
+      transition: opacity 1s cubic-bezier(.16, 1, .3, 1), transform 1s cubic-bezier(.16, 1, .3, 1);
       will-change: transform, opacity;
       transform-style: preserve-3d;
       overflow: hidden;
@@ -245,7 +269,7 @@
       background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.25), transparent 60%);
       opacity: 0;
       mix-blend-mode: overlay;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 10;
     }
 
@@ -258,8 +282,9 @@
       border: 1px solid rgba(255,255,255,.22);
       background: rgba(255,255,255,.05);
       box-shadow: 0 0 0 7px rgba(255,255,255,.03), 0 12px 35px rgba(0,0,0,.5);
-      transition: transform .25s ease, border-color .25s ease;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
       transform: translateZ(30px);
+      will-change: transform;
     }
 
     .avatar:hover {
@@ -318,13 +343,14 @@
 
     .link, .volume-control, .view-counter {
       opacity: 0;
-      transform: translateY(18px);
+      transform: translateY(20px);
       transition:
-        opacity .5s cubic-bezier(.16, 1, .3, 1),
-        transform .5s cubic-bezier(.16, 1, .3, 1),
-        background .22s ease,
-        border-color .22s ease,
-        box-shadow .22s ease;
+        opacity 0.6s cubic-bezier(.16, 1, .3, 1),
+        transform 0.6s cubic-bezier(.16, 1, .3, 1),
+        background 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
     }
 
     .link.item-visible, .volume-control.item-visible, .view-counter.item-visible {
@@ -383,6 +409,10 @@
       filter: drop-shadow(0 0 6px rgba(36, 161, 222, 0.8));
     }
 
+    .link-roblox .icon-wrapper svg {
+      filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+    }
+
     .link-guns .icon-wrapper img {
       filter: drop-shadow(0 0 6px rgba(138, 79, 155, 0.8));
     }
@@ -393,14 +423,14 @@
       inset: 0;
       background: linear-gradient(100deg, transparent, rgba(255,255,255,.18), transparent);
       transform: translateX(-110%);
-      transition: .5s;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .link:hover {
       transform: translateY(-2px) scale(1.015);
       background: rgba(255,255,255,.12);
       border-color: rgba(255,255,255,.25);
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.3);
     }
 
     .link-discord:hover .icon-wrapper svg {
@@ -409,6 +439,10 @@
 
     .link-telegram:hover .icon-wrapper svg {
       filter: drop-shadow(0 0 10px rgba(36, 161, 222, 1));
+    }
+
+    .link-roblox:hover .icon-wrapper svg {
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 1));
     }
 
     .link-guns:hover .icon-wrapper img {
@@ -473,7 +507,7 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transition: opacity .25s ease, visibility .25s ease;
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: none !important;
     }
 
@@ -493,8 +527,8 @@
       -webkit-backdrop-filter: blur(50px) saturate(200%);
       box-shadow: 0 25px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.15);
       text-align: center;
-      transform: scale(.96) translateY(8px);
-      transition: opacity .2s ease, transform .2s ease;
+      transform: scale(.94) translateY(10px);
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: none !important;
     }
 
@@ -528,7 +562,7 @@
       -webkit-backdrop-filter: blur(20px);
       font: inherit;
       cursor: none !important;
-      transition: background .2s ease, transform .2s ease;
+      transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .confirm-actions button:hover {
@@ -544,7 +578,7 @@
       gap: 16px;
       opacity: 0;
       transform: scale(.9);
-      transition: opacity .25s ease, transform .25s ease;
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
       user-select: none;
     }
@@ -553,6 +587,19 @@
       opacity: 1;
       transform: scale(1);
       pointer-events: auto;
+    }
+
+    .redirect-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .redirect-icon {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      display: block;
     }
 
     .redirect-text {
@@ -571,7 +618,7 @@
       border: 1px solid rgba(255,255,255,.15);
       border-radius: 20px;
       cursor: none !important;
-      transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
+      transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease, border-color 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .redirect-cancel-btn:hover {
@@ -581,7 +628,7 @@
       transform: translateY(-1px);
     }
 
-    .dc-modal, .tg-modal {
+    .dc-modal, .tg-modal, .rbx-modal {
       position: fixed;
       inset: 0;
       z-index: 25000;
@@ -593,17 +640,17 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      perspective: 1000px;
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      perspective: 1200px;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .dc-modal.visible, .tg-modal.visible {
+    .dc-modal.visible, .tg-modal.visible, .rbx-modal.visible {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
     }
 
-    .dc-card, .tg-card {
+    .dc-card, .tg-card, .rbx-card {
       width: min(340px, calc(100vw - 32px));
       padding: 24px;
       border-radius: 22px;
@@ -614,7 +661,7 @@
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
       opacity: 0;
       transform: scale(0.92) translateY(10px);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -624,12 +671,12 @@
       will-change: transform, opacity;
     }
 
-    .dc-modal.visible .dc-card, .tg-modal.visible .tg-card {
+    .dc-modal.visible .dc-card, .tg-modal.visible .tg-card, .rbx-modal.visible .rbx-card {
       opacity: 1;
       transform: scale(1) translateY(0);
     }
 
-    .dc-modal-close, .tg-modal-close {
+    .dc-modal-close, .tg-modal-close, .rbx-modal-close {
       position: absolute;
       top: 14px;
       right: 14px;
@@ -646,11 +693,11 @@
       align-items: center;
       justify-content: center;
       cursor: none !important;
-      transition: background 0.2s ease, color 0.2s ease;
+      transition: background 0.25s ease, color 0.25s ease;
       transform: translateZ(20px);
     }
 
-    .dc-modal-close:hover, .tg-modal-close:hover {
+    .dc-modal-close:hover, .tg-modal-close:hover, .rbx-modal-close:hover {
       background: rgba(255, 255, 255, 0.22);
       color: #fff;
     }
@@ -660,9 +707,10 @@
       width: 72px;
       height: 72px;
       margin-bottom: 12px;
-      transition: transform 0.25s ease;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       transform: translateZ(30px);
       cursor: none !important;
+      will-change: transform;
     }
 
     .dc-avatar-wrap:hover, .tg-avatar-wrap:hover {
@@ -704,21 +752,22 @@
       transform: translateZ(25px);
     }
 
-    .dc-modal-username, .tg-modal-username {
+    .dc-modal-username, .tg-modal-username, .rbx-modal-username {
       font-size: 18px;
       font-weight: 600;
       color: #fff;
       cursor: none !important;
       user-select: none;
-      transition: opacity 0.2s ease, transform 0.2s ease;
+      transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateZ(25px);
     }
 
-    .dc-modal-username:hover, .tg-modal-username:hover {
+    .dc-modal-username:hover, .tg-modal-username:hover, .rbx-modal-username:hover {
       opacity: 0.85;
-      transform: scale(1.02);
+      transform: translateZ(25px) scale(1.02);
     }
 
-    .dc-modal-status-text, .tg-modal-status-text {
+    .dc-modal-status-text, .tg-modal-status-text, .rbx-modal-status-text {
       font-size: 12px;
       color: rgba(255, 255, 255, 0.65);
       text-transform: capitalize;
@@ -728,6 +777,11 @@
 
     .tg-modal-status-text {
       color: #229ED9;
+    }
+
+    .rbx-modal-status-text {
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 18px;
     }
 
     .dc-activity-box {
@@ -779,7 +833,7 @@
       margin-top: 2px;
     }
 
-    .dc-add-btn, .tg-add-btn {
+    .dc-add-btn, .tg-add-btn, .rbx-btn {
       width: 100%;
       height: 42px;
       border-radius: 12px;
@@ -791,11 +845,16 @@
       font-size: 13px;
       font-weight: 500;
       cursor: none !important;
-      transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+      transition: background 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
       transform: translateZ(15px);
+      margin-bottom: 8px;
     }
 
-    .dc-add-btn:hover, .tg-add-btn:hover {
+    .dc-add-btn:last-child, .tg-add-btn:last-child, .rbx-btn:last-child {
+      margin-bottom: 0;
+    }
+
+    .dc-add-btn:hover, .tg-add-btn:hover, .rbx-btn:hover {
       background: rgba(255, 255, 255, 0.22);
       border-color: rgba(255, 255, 255, 0.35);
       transform: translateZ(20px) translateY(-1px);
@@ -820,83 +879,12 @@
       white-space: nowrap;
       pointer-events: none;
       opacity: 0;
-      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .copy-toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
-    }
-
-    .pfp-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 40000;
-      display: grid;
-      place-items: center;
-      background: rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(55px) saturate(180%);
-      -webkit-backdrop-filter: blur(55px) saturate(180%);
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .pfp-modal.visible {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
-
-    .pfp-modal-img {
-      width: min(400px, 80vw);
-      height: min(400px, 80vw);
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 0 10px rgba(255, 255, 255, 0.05);
-      transform: scale(0.7) translateY(20px);
-      opacity: 0;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .pfp-modal.visible .pfp-modal-img {
-      transform: scale(1) translateY(0);
-      opacity: 1;
-    }
-
-    .pfp-close-btn {
-      position: absolute;
-      top: 30px;
-      right: 30px;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      user-select: none;
-      opacity: 0;
-      transform: scale(0.8) rotate(-90deg);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-    }
-
-    .pfp-modal.visible .pfp-close-btn {
-      opacity: 1;
-      transform: scale(1) rotate(0deg);
-    }
-
-    .pfp-close-btn:hover {
-      background: rgba(255, 255, 255, 0.22);
-      border-color: rgba(255, 255, 255, 0.35);
-      color: #fff;
     }
 
     .custom-ctx-menu {
@@ -916,7 +904,7 @@
       opacity: 0;
       visibility: hidden;
       transform: scale(0.92) translateY(-5px);
-      transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.18s;
+      transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s;
       pointer-events: none;
     }
 
@@ -937,7 +925,7 @@
       align-items: center;
       justify-content: space-between;
       cursor: none !important;
-      transition: background 0.15s ease, color 0.15s ease;
+      transition: background 0.2s ease, color 0.2s ease;
       user-select: none;
     }
 
@@ -958,14 +946,6 @@
       }
 
       h1 { font-size: 25px; }
-
-      .pfp-close-btn {
-        top: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-      }
     }
   </style>
 </head>
@@ -989,9 +969,10 @@
 
   <div id="intro">
     <div class="enter-wrapper">
-      <div class="enter-text" id="line1">made by risk</div>
-      <div class="enter-text" id="line2">dm me on discord for commissions</div>
-      <div class="enter-text">
+      <div class="intro-fade-text" id="fadeText1">made by risk</div>
+      <div class="intro-fade-text" id="fadeText2">dm me on discord for commissions</div>
+      <div class="volume-warning-intro" id="volumeWarningIntro">you may need to lower the volume</div>
+      <div class="enter-text" id="typeWrap">
         <span class="typing" id="typing"></span>
       </div>
     </div>
@@ -1012,7 +993,7 @@
       <div class="bio"></div>
 
       <div class="links">
-        <button type="button" class="link link-discord" id="discordLinkBtn" data-href="https://discord.com/users/1547303503213367297">
+        <button type="button" class="link link-discord" id="discordLinkBtn" data-href="https://discord.com/users/1547303503213367297" data-name="Discord" data-icon="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png">
           <div class="icon-wrapper">
             <svg viewBox="0 0 127.14 96.36" fill="#5865F2">
               <path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.91-72.14zM42.45 65.69c-6.22 0-11.33-5.71-11.33-12.73s5-12.73 11.33-12.73c6.38 0 11.45 5.76 11.33 12.73 0 7.02-4.95 12.73-11.33 12.73zm42.24 0c-6.22 0-11.33-5.71-11.33-12.73s5-12.73 11.33-12.73c6.38 0 11.45 5.76 11.33 12.73 0 7.02-4.95 12.73-11.33 12.73 z"/>
@@ -1021,7 +1002,7 @@
           <span class="link-text">Discord</span>
         </button>
 
-        <button type="button" class="link link-telegram" id="telegramLinkBtn" data-href="https://t.me/mostwhen">
+        <button type="button" class="link link-telegram" id="telegramLinkBtn" data-href="https://t.me/mostwhen" data-name="Telegram" data-icon="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg">
           <div class="icon-wrapper">
             <svg viewBox="0 0 24 24" fill="#24A1DE">
               <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.56 8.16l-2.03 9.56c-.15.68-.55.84-1.12.52l-3.1-2.28-1.5 1.44c-.17.17-.31.31-.63.31l.22-3.18 5.79-5.23c.25-.22-.05-.34-.39-.12l-7.15 4.5-3.08-.96c-.67-.21-.68-.67.14-.99l12.05-4.65c.56-.2 1.05.13.88.99z"/>
@@ -1030,7 +1011,16 @@
           <span class="link-text">Telegram</span>
         </button>
 
-        <a class="link link-guns" href="https://guns.lol/kje" target="_blank" rel="noopener">
+        <button type="button" class="link link-roblox" id="robloxLinkBtn" data-href="https://media.discordapp.net/attachments/1547542929449553920/1549854786063433768/no_change.png?ex=6aac363f&is=6aaae4bf&hm=826031865c581f9ec129978952a411c447871973613e3ce405689e36e3143b64&=&format=webp&quality=lossless">
+          <div class="icon-wrapper">
+            <svg viewBox="0 0 24 24" fill="#ffffff">
+              <path d="M18.15 0L0 4.19l4.19 18.15L22.33 18.15 18.15 0zM14.6 14.6l-5.2 1.3 1.3-5.2 5.2-1.3-1.3 5.2z"/>
+            </svg>
+          </div>
+          <span class="link-text">Roblox</span>
+        </button>
+
+        <a class="link link-guns" href="https://guns.lol/kje" target="_blank" rel="noopener" data-name="guns.lol" data-icon="https://assets.guns.lol/guns_logo_no_background_cropped.png">
           <div class="icon-wrapper">
             <img src="https://assets.guns.lol/guns_logo_no_background_cropped.png" alt="guns.lol icon">
           </div>
@@ -1042,7 +1032,7 @@
           <span id="viewCount" class="view-count">0</span>
         </div>
 
-        <div class="volume-control">
+        <div class="volume-control" id="volumeControlSection">
           <span class="volume-icon">Volume</span>
           <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="1">
         </div>
@@ -1092,6 +1082,17 @@
     </div>
   </div>
 
+  <div class="rbx-modal" id="rbxModal">
+    <div class="rbx-card" id="rbxCard">
+      <div class="rbx-modal-close" id="rbxModalClose">✕</div>
+      <div class="rbx-modal-username" id="rbxModalUsername">Roblox</div>
+      <div class="rbx-modal-status-text" id="rbxModalStatusText">@80vcv</div>
+
+      <button type="button" class="rbx-btn" id="rbxAddBtn">Add as a Friend</button>
+      <button type="button" class="rbx-btn" id="rbxFollowBtn">Follow Profile</button>
+    </div>
+  </div>
+
   <div class="confirm-overlay" id="confirmOverlay">
     <div class="confirm-box" id="confirmBox">
       <h2>Are you sure?</h2>
@@ -1103,22 +1104,17 @@
     </div>
     
     <div class="redirect-wrapper" id="redirectWrapper">
-      <div class="redirect-text" id="redirectText"></div>
+      <div class="redirect-content">
+        <img src="" alt="" class="redirect-icon" id="redirectIcon">
+        <div class="redirect-text" id="redirectText"></div>
+      </div>
       <button type="button" class="redirect-cancel-btn" id="redirectCancelBtn">Cancel</button>
     </div>
-  </div>
-
-  <div class="pfp-modal" id="pfpModal">
-    <div class="pfp-close-btn" id="pfpCloseBtn">✕</div>
-    <img src="./pfp.gif" alt="profile large" class="pfp-modal-img" id="pfpModalImg">
   </div>
 
   <div class="custom-ctx-menu" id="customCtxMenu">
     <div class="ctx-item" id="ctxToggleAudio">
       <span id="ctxAudioLabel">Pause Audio</span>
-    </div>
-    <div class="ctx-item" id="ctxCopyDiscord">
-      <span>Copy Discord ID</span>
     </div>
     <div class="ctx-item" id="ctxReloadPage">
       <span>Reload Page</span>
@@ -1128,6 +1124,19 @@
   <script>
     const $ = selector => document.querySelector(selector);
     const $$ = selector => document.querySelectorAll(selector);
+
+    // Detect if user is on mobile
+    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
+
+    if (isMobile) {
+      // Remove volume control slider on mobile
+      const volumeControl = $("#volumeControlSection");
+      if (volumeControl) volumeControl.remove();
+
+      // Show volume warning text below intro before click
+      const volumeWarningIntro = $("#volumeWarningIntro");
+      if (volumeWarningIntro) volumeWarningIntro.style.display = "block";
+    }
 
     const viewCount = $("#viewCount");
 
@@ -1144,8 +1153,9 @@
 
     const intro = $("#intro");
     const typing = $("#typing");
-    const line1 = $("#line1");
-    const line2 = $("#line2");
+    const typeWrap = $("#typeWrap");
+    const fadeText1 = $("#fadeText1");
+    const fadeText2 = $("#fadeText2");
     const card = $("#card");
     const video = $("#backgroundVideo");
     const cursor = $("#cursor");
@@ -1158,37 +1168,29 @@
     let entered = false;
     let canClick = false;
 
-    // Sequence for intro texts
     function startIntroSequence() {
       setTimeout(() => {
-        line1.classList.add("visible");
+        fadeText1.classList.add("active");
         setTimeout(() => {
-          line1.style.transition = "opacity 0.6s ease";
-          line1.style.opacity = "0";
+          fadeText1.classList.remove("active");
           setTimeout(() => {
-            line1.remove();
-            line2.classList.add("visible");
+            fadeText2.classList.add("active");
             setTimeout(() => {
-              line2.style.transition = "opacity 0.6s ease";
-              line2.style.opacity = "0";
+              fadeText2.classList.remove("active");
               setTimeout(() => {
-                line2.remove();
-                // Finally show "click to enter" and enable clicking
-                const clickTextEl = typing.parentElement;
-                clickTextEl.classList.add("visible");
+                typeWrap.classList.add("visible");
                 typeText();
               }, 600);
-            }, 1800);
+            }, 1600);
           }, 600);
         }, 1800);
-      }, 350);
+      }, 400);
     }
 
     startIntroSequence();
 
     function typeText() {
       if (index >= text.length) {
-        // Finished typing "click to enter", now allow clicking to enter the site
         canClick = true;
         return;
       }
@@ -1218,7 +1220,7 @@
     function revealButtons() {
       const items = $$(".links .link, .view-counter, .volume-control");
       items.forEach((item, i) => {
-        setTimeout(() => item.classList.add("item-visible"), i * 140);
+        setTimeout(() => item.classList.add("item-visible"), i * 110);
       });
     }
 
@@ -1228,7 +1230,11 @@
 
       try {
         video.muted = false;
-        video.volume = Number(volumeSlider.value);
+        if (volumeSlider) {
+          video.volume = Number(volumeSlider.value);
+        } else {
+          video.volume = 1; // Default volume for mobile since slider is removed
+        }
         await video.play();
       } catch (_) {}
 
@@ -1236,38 +1242,44 @@
 
       setTimeout(() => {
         card.classList.add("visible");
-        setTimeout(() => typeProfileName("risk", revealButtons), 300);
+        setTimeout(() => typeProfileName("risk", revealButtons), 250);
       }, 150);
     }
 
     document.addEventListener("click", enterSite);
 
-    let mouseX = 0;
-    let mouseY = 0;
-    let glowX = 0;
-    let glowY = 0;
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let cursorX = window.innerWidth / 2;
+    let cursorY = window.innerHeight / 2;
+    let glowX = window.innerWidth / 2;
+    let glowY = window.innerHeight / 2;
 
     document.addEventListener("mousemove", event => {
       mouseX = event.clientX;
       mouseY = event.clientY;
-      cursor.style.left = mouseX + "px";
-      cursor.style.top = mouseY + "px";
     });
 
-    function animateGlow() {
-      glowX += (mouseX - glowX) * .18;
-      glowY += (mouseY - glowY) * .18;
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.35;
+      cursorY += (mouseY - cursorY) * 0.35;
+      cursor.style.left = cursorX + "px";
+      cursor.style.top = cursorY + "px";
+
+      glowX += (mouseX - glowX) * 0.12;
+      glowY += (mouseY - glowY) * 0.12;
       cursorGlow.style.left = glowX + "px";
       cursorGlow.style.top = glowY + "px";
-      requestAnimationFrame(animateGlow);
+
+      requestAnimationFrame(animateCursor);
     }
 
-    animateGlow();
+    animateCursor();
 
-    $$(".link, .confirm-actions button, .avatar, .pfp-close-btn, " +
+    $$(".link, .confirm-actions button, .avatar, " +
       ".redirect-cancel-btn, .dc-modal-close, .dc-add-btn, .tg-modal-close, " +
       ".tg-add-btn, .tg-avatar-wrap, .dc-avatar-wrap, .dc-modal-username, " +
-      ".tg-modal-username, .ctx-item").forEach(el => {
+      ".tg-modal-username, .rbx-modal-close, .rbx-btn, .ctx-item").forEach(el => {
       el.addEventListener("mouseenter", () => {
         cursor.style.width = "24px";
         cursor.style.height = "24px";
@@ -1281,23 +1293,32 @@
       });
     });
 
-    volumeSlider.addEventListener("input", () => {
-      video.volume = Number(volumeSlider.value);
-    });
+    if (volumeSlider) {
+      volumeSlider.addEventListener("input", () => {
+        video.volume = Number(volumeSlider.value);
+      });
+    }
 
     const confirmOverlay = $("#confirmOverlay");
     const confirmBox = $("#confirmBox");
     const redirectWrapper = $("#redirectWrapper");
     const redirectText = $("#redirectText");
+    const redirectIcon = $("#redirectIcon");
     const redirectCancelBtn = $("#redirectCancelBtn");
     const cancelButton = $("#cancelButton");
     const continueButton = $("#continueButton");
 
     let pendingUrl = null;
+    let pendingName = "";
+    let pendingIcon = "";
     let isRedirecting = false;
+    let countdownInterval = null;
+    let currentCountdown = 3;
 
-    function triggerRedirectPrompt(url) {
+    function triggerRedirectPrompt(url, name, icon) {
       pendingUrl = url;
+      pendingName = name;
+      pendingIcon = icon;
       confirmBox.style.opacity = "1";
       confirmBox.style.pointerEvents = "auto";
       redirectWrapper.classList.remove("visible");
@@ -1308,13 +1329,15 @@
       link.addEventListener("click", event => {
         if (isRedirecting) return;
         event.preventDefault();
-        triggerRedirectPrompt(link.href);
+        triggerRedirectPrompt(link.href, link.getAttribute("data-name"), link.getAttribute("data-icon"));
       });
     });
 
     function resetConfirmationState() {
       isRedirecting = false;
       pendingUrl = null;
+      clearInterval(countdownInterval);
+      currentCountdown = 3;
       redirectWrapper.classList.remove("visible");
       confirmOverlay.classList.remove("visible");
 
@@ -1336,8 +1359,21 @@
       isRedirecting = true;
       confirmBox.style.opacity = "0";
       confirmBox.style.pointerEvents = "none";
-      
-      window.location.href = pendingUrl;
+
+      currentCountdown = 3;
+      redirectIcon.src = pendingIcon;
+      redirectText.textContent = `Redirecting to ${pendingName} in ${currentCountdown}...`;
+      redirectWrapper.classList.add("visible");
+
+      countdownInterval = setInterval(() => {
+        currentCountdown--;
+        if (currentCountdown > 0) {
+          redirectText.textContent = `Redirecting to ${pendingName} in ${currentCountdown}...`;
+        } else {
+          clearInterval(countdownInterval);
+          window.location.href = pendingUrl;
+        }
+      }, 1000);
     });
 
     confirmOverlay.addEventListener("click", event => {
@@ -1373,7 +1409,8 @@
     });
 
     dcAddBtn.addEventListener("click", () => {
-      triggerRedirectPrompt(discordLinkBtn.getAttribute("data-href"));
+      dcModal.classList.remove("visible");
+      triggerRedirectPrompt(discordLinkBtn.getAttribute("data-href"), discordLinkBtn.getAttribute("data-name"), discordLinkBtn.getAttribute("data-icon"));
     });
 
     dcModalUsername.addEventListener("click", () => {
@@ -1464,47 +1501,41 @@
     });
 
     tgAddBtn.addEventListener("click", () => {
-      triggerRedirectPrompt(telegramLinkBtn.getAttribute("data-href"));
+      tgModal.classList.remove("visible");
+      triggerRedirectPrompt(telegramLinkBtn.getAttribute("data-href"), telegramLinkBtn.getAttribute("data-name"), telegramLinkBtn.getAttribute("data-icon"));
     });
 
     tgModalUsername.addEventListener("click", () => {
       copyUsername(tgModalUsername.textContent, tgCopyToast);
     });
 
-    const avatarBtn = $("#avatarBtn");
-    const mainPfp = $("#mainPfp");
-    const tgAvatarBtn = $("#tgAvatarBtn");
-    const dcAvatarWrap = $("#dcAvatarWrap");
-    const dcModalAvatar = $("#dcModalAvatar");
-    const pfpModal = $("#pfpModal");
-    const pfpModalImg = $("#pfpModalImg");
-    const pfpCloseBtn = $("#pfpCloseBtn");
+    const robloxLinkBtn = $("#robloxLinkBtn");
+    const rbxModal = $("#rbxModal");
+    const rbxModalClose = $("#rbxModalClose");
+    const rbxAddBtn = $("#rbxAddBtn");
+    const rbxFollowBtn = $("#rbxFollowBtn");
 
-    avatarBtn.addEventListener("click", () => {
-      pfpModalImg.src = mainPfp.src;
-      pfpModal.classList.add("visible");
+    robloxLinkBtn.addEventListener("click", () => rbxModal.classList.add("visible"));
+
+    rbxModalClose.addEventListener("click", () => rbxModal.classList.remove("visible"));
+
+    rbxModal.addEventListener("click", event => {
+      if (event.target === rbxModal) rbxModal.classList.remove("visible");
     });
 
-    tgAvatarBtn.addEventListener("click", () => {
-      pfpModalImg.src = "./telegrampfp.png";
-      pfpModal.classList.add("visible");
+    rbxAddBtn.addEventListener("click", () => {
+      rbxModal.classList.remove("visible");
+      triggerRedirectPrompt(robloxLinkBtn.getAttribute("data-href"), robloxLinkBtn.getAttribute("data-name"), robloxLinkBtn.getAttribute("data-icon"));
     });
 
-    dcAvatarWrap.addEventListener("click", () => {
-      pfpModalImg.src = dcModalAvatar.src;
-      pfpModal.classList.add("visible");
-    });
-
-    pfpCloseBtn.addEventListener("click", () => pfpModal.classList.remove("visible"));
-
-    pfpModal.addEventListener("click", event => {
-      if (event.target === pfpModal) pfpModal.classList.remove("visible");
+    rbxFollowBtn.addEventListener("click", () => {
+      rbxModal.classList.remove("visible");
+      triggerRedirectPrompt(robloxLinkBtn.getAttribute("data-href"), robloxLinkBtn.getAttribute("data-name"), robloxLinkBtn.getAttribute("data-icon"));
     });
 
     const customCtxMenu = $("#customCtxMenu");
     const ctxToggleAudio = $("#ctxToggleAudio");
     const ctxAudioLabel = $("#ctxAudioLabel");
-    const ctxCopyDiscord = $("#ctxCopyDiscord");
     const ctxReloadPage = $("#ctxReloadPage");
 
     document.addEventListener("contextmenu", event => {
@@ -1527,11 +1558,6 @@
 
     ctxToggleAudio.addEventListener("click", () => {
       video.paused ? video.play() : video.pause();
-      customCtxMenu.classList.remove("visible");
-    });
-
-    ctxCopyDiscord.addEventListener("click", () => {
-      navigator.clipboard.writeText(DISCORD_ID);
       customCtxMenu.classList.remove("visible");
     });
 
@@ -1572,7 +1598,7 @@
             glare.style.opacity = "1";
             glare.style.background =
               `radial-gradient(circle at ${insideX * 100}% ${insideY * 100}%, rgba(255, 255, 255, 0.28), transparent 60%)`;
-          }
+            }
         } else {
           hovered = false;
           if (glare) glare.style.opacity = "0";
@@ -1588,12 +1614,11 @@
       });
 
       function update() {
-        currentX += (targetX - currentX) * 0.08;
-        currentY += (targetY - currentY) * 0.08;
+        currentX += (targetX - currentX) * 0.12;
+        currentY += (targetY - currentY) * 0.12;
 
         if (entered) {
           const s = hovered ? scale : 1;
-
           el.style.transform =
             `rotateX(${currentX.toFixed(2)}deg) rotateY(${currentY.toFixed(2)}deg) scale3d(${s}, ${s}, 1)`;
         }
@@ -1607,6 +1632,7 @@
     setupTilt("#card", 16, 1.025);
     setupTilt("#dcCard", 14, 1.02);
     setupTilt("#tgCard", 14, 1.02);
+    setupTilt("#rbxCard", 14, 1.02);
   </script>
 </body>
 </html>
