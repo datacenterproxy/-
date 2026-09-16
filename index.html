@@ -724,10 +724,9 @@
       object-fit: cover;
       border: 1px solid rgba(255, 255, 255, 0.22);
       background: rgba(255,255,255,.05);
-      transition: transform 0.3s ease; /* Added for Zoom capability */
+      transition: transform 0.3s ease;
     }
 
-    /* Zoom in feature for Discord and Telegram PFP */
     .dc-avatar-wrap:hover .dc-avatar-img,
     .tg-avatar-wrap:hover .tg-avatar-img {
       transform: scale(1.2);
@@ -1018,7 +1017,6 @@
           <span class="link-text">Telegram</span>
         </button>
 
-        <!-- Updated Roblox Link and Icon -->
         <button type="button" class="link link-roblox" id="robloxLinkBtn" data-href="https://www.roblox.com/users/7626940077/profile" data-name="Roblox" data-icon="https://cdn.discordapp.com/attachments/1547542929449553920/1549854786063433768/no_change.png?ex=6aac363f&is=6aaae4bf&hm=826031865c581f9ec129978952a411c447871973613e3ce405689e36e3143b64&">
           <div class="icon-wrapper">
             <img src="https://cdn.discordapp.com/attachments/1547542929449553920/1549854786063433768/no_change.png?ex=6aac363f&is=6aaae4bf&hm=826031865c581f9ec129978952a411c447871973613e3ce405689e36e3143b64&" alt="Roblox icon">
@@ -1135,11 +1133,9 @@
     const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
 
     if (isMobile) {
-      // Remove volume control slider on mobile
       const volumeControl = $("#volumeControlSection");
       if (volumeControl) volumeControl.remove();
 
-      // Show volume warning text below intro before click ONLY FOR MOBILE
       const volumeWarningIntro = $("#volumeWarningIntro");
       if (volumeWarningIntro) volumeWarningIntro.style.display = "block";
     }
@@ -1239,7 +1235,7 @@
         if (volumeSlider) {
           video.volume = Number(volumeSlider.value);
         } else {
-          video.volume = 1; // Default volume for mobile since slider is removed
+          video.volume = 1;
         }
         await video.play();
       } catch (_) {}
@@ -1321,8 +1317,34 @@
     let countdownInterval = null;
     let currentCountdown = 3;
 
+    // Function to translate web URLs to app schemes on mobile devices
+    function getOptimizedUrl(url, name) {
+      if (!isMobile) return url;
+
+      if (name === "Discord") {
+        // Extracts the user ID from https://discord.com/users/ID
+        const userIdMatch = url.match(/\/users\/(\d+)/);
+        if (userIdMatch) {
+          return `discord://-/users/${userIdMatch[1]}`;
+        }
+      } else if (name === "Telegram") {
+        // Converts https://t.me/username to tg://resolve?domain=username
+        const tgMatch = url.match(/t\.me\/([a-zA-Z0-9_]+)/);
+        if (tgMatch) {
+          return `tg://resolve?domain=${tgMatch[1]}`;
+        }
+      } else if (name === "Roblox") {
+        // Converts Roblox profile link to app scheme format
+        const rbxMatch = url.match(/\/users\/(\d+)/);
+        if (rbxMatch) {
+          return `roblox://navigation/profile?userId=${rbxMatch[1]}`;
+        }
+      }
+      return url;
+    }
+
     function triggerRedirectPrompt(url, name, icon) {
-      pendingUrl = url;
+      pendingUrl = getOptimizedUrl(url, name);
       pendingName = name;
       pendingIcon = icon;
       confirmBox.style.opacity = "1";
