@@ -409,7 +409,7 @@
       filter: drop-shadow(0 0 6px rgba(36, 161, 222, 0.8));
     }
 
-    .link-roblox .icon-wrapper svg {
+    .link-roblox .icon-wrapper img {
       filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
     }
 
@@ -441,7 +441,7 @@
       filter: drop-shadow(0 0 10px rgba(36, 161, 222, 1));
     }
 
-    .link-roblox:hover .icon-wrapper svg {
+    .link-roblox:hover .icon-wrapper img {
       filter: drop-shadow(0 0 10px rgba(255, 255, 255, 1));
     }
 
@@ -724,6 +724,13 @@
       object-fit: cover;
       border: 1px solid rgba(255, 255, 255, 0.22);
       background: rgba(255,255,255,.05);
+      transition: transform 0.3s ease; /* Added for Zoom capability */
+    }
+
+    /* Zoom in feature for Discord and Telegram PFP */
+    .dc-avatar-wrap:hover .dc-avatar-img,
+    .tg-avatar-wrap:hover .tg-avatar-img {
+      transform: scale(1.2);
     }
 
     .dc-status-indicator, .tg-status-indicator {
@@ -971,7 +978,7 @@
     <div class="enter-wrapper">
       <div class="intro-fade-text" id="fadeText1">made by risk</div>
       <div class="intro-fade-text" id="fadeText2">dm me on discord for commissions</div>
-      <div class="volume-warning-intro" id="volumeWarningIntro">you may need to lower the volume</div>
+      <div class="volume-warning-intro" id="volumeWarningIntro">you may need to lower your volume</div>
       <div class="enter-text" id="typeWrap">
         <span class="typing" id="typing"></span>
       </div>
@@ -1011,11 +1018,10 @@
           <span class="link-text">Telegram</span>
         </button>
 
-        <button type="button" class="link link-roblox" id="robloxLinkBtn" data-href="https://media.discordapp.net/attachments/1547542929449553920/1549854786063433768/no_change.png?ex=6aac363f&is=6aaae4bf&hm=826031865c581f9ec129978952a411c447871973613e3ce405689e36e3143b64&=&format=webp&quality=lossless">
+        <!-- Updated Roblox Link and Icon -->
+        <button type="button" class="link link-roblox" id="robloxLinkBtn" data-href="https://www.roblox.com/users/7626940077/profile" data-name="Roblox" data-icon="https://cdn.discordapp.com/attachments/1547542929449553920/1549854786063433768/no_change.png?ex=6aac363f&is=6aaae4bf&hm=826031865c581f9ec129978952a411c447871973613e3ce405689e36e3143b64&">
           <div class="icon-wrapper">
-            <svg viewBox="0 0 24 24" fill="#ffffff">
-              <path d="M18.15 0L0 4.19l4.19 18.15L22.33 18.15 18.15 0zM14.6 14.6l-5.2 1.3 1.3-5.2 5.2-1.3-1.3 5.2z"/>
-            </svg>
+            <img src="https://cdn.discordapp.com/attachments/1547542929449553920/1549854786063433768/no_change.png?ex=6aac363f&is=6aaae4bf&hm=826031865c581f9ec129978952a411c447871973613e3ce405689e36e3143b64&" alt="Roblox icon">
           </div>
           <span class="link-text">Roblox</span>
         </button>
@@ -1133,7 +1139,7 @@
       const volumeControl = $("#volumeControlSection");
       if (volumeControl) volumeControl.remove();
 
-      // Show volume warning text below intro before click
+      // Show volume warning text below intro before click ONLY FOR MOBILE
       const volumeWarningIntro = $("#volumeWarningIntro");
       if (volumeWarningIntro) volumeWarningIntro.style.display = "block";
     }
@@ -1529,7 +1535,7 @@
     });
 
     rbxFollowBtn.addEventListener("click", () => {
-      rbxModal.classList.remove("visible");
+      rbxModal.classList.add("visible");
       triggerRedirectPrompt(robloxLinkBtn.getAttribute("data-href"), robloxLinkBtn.getAttribute("data-name"), robloxLinkBtn.getAttribute("data-icon"));
     });
 
