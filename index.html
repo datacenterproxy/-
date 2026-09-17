@@ -369,7 +369,7 @@
         transform 0.6s cubic-bezier(.16, 1, .3, 1),
         background 0.25s cubic-bezier(0.16, 1, 0.3, 1),
         border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.25s cubic-bezier(.16, 1, .3, 1);
+        box-shadow 0.25s cubic-bezier(0.16, 1, .3, 1);
       will-change: transform, opacity;
     }
 
@@ -1394,6 +1394,7 @@
 
 <div class="dc-modal" id="dcModal">
   <div class="dc-card" id="dcCard">
+
     <div class="dc-modal-close" id="dcModalClose">✕</div>
 
     <div class="dc-avatar-wrap" id="dcAvatarWrap">
@@ -1455,11 +1456,13 @@
     <div class="copy-toast" id="dcCopyToast">
       username copied to clipboard
     </div>
+
   </div>
 </div>
 
 <div class="tg-modal" id="tgModal">
   <div class="tg-card" id="tgCard">
+
     <div class="tg-modal-close" id="tgModalClose">✕</div>
 
     <div class="tg-avatar-wrap" id="tgAvatarBtn">
@@ -1491,6 +1494,7 @@
     <div class="copy-toast" id="tgCopyToast">
       username copied to clipboard
     </div>
+
   </div>
 </div>
 
@@ -1569,6 +1573,7 @@
       type="button"
       class="rbx-add-btn"
       id="rbxAddBtn"
+      onclick="triggerRedirectPrompt('https://www.roblox.com/users/7626940077/profile', 'Roblox', 'https://cdn.discordapp.com/attachments/1547542929449553920/1549854786063433768/no_change.png?ex=6aac363f&is=6aaae4bf&hm=826031865c581f9ec129978952a411c447871973613e3ce405689e36e3143b64&')"
     >
       Add as a Friend
     </button>
