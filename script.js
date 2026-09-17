@@ -233,7 +233,7 @@ $$(
   ".redirect-cancel-btn, .dc-modal-close, .dc-add-btn, " +
   ".tg-modal-close, .tg-add-btn, .tg-avatar-wrap, " +
   ".dc-avatar-wrap, .dc-modal-username, .tg-modal-username, " +
-  ".rbx-modal-close, .rbx-avatar-wrap, .rbx-add-btn, .ctx-item"
+  ".rbx-modal-close, .rbx-avatar-wrap, .ctx-item"
 ).forEach(el => {
   el.addEventListener(
     "mouseenter",
@@ -822,8 +822,8 @@ tgModalUsername.addEventListener(
 const ROBLOX_USER_ID =
   "7626940077";
 
-const ROBLOX_PROFILE_URL =
-  "https://www.roblox.com/users/7626940077/profile";
+const ROBLOX_API =
+  "https://robloxapilmao.yukiriskingitfs.workers.dev/roblox/7626940077";
 
 const robloxLinkBtn =
   $("#robloxLinkBtn");
@@ -851,141 +851,93 @@ const rbxFriendsCount =
   $("#rbxFriendCount") ||
   $("#rbxFriendsCount");
 
-async function fetchRobloxJSON(url) {
-  const response =
-    await fetch(
-      url,
-      {
-        cache: "no-store"
-      }
-    );
-
-  if (!response.ok) {
-    throw new Error(
-      `Roblox API ${response.status}`
-    );
-  }
-
-  return response.json();
+if (
+  isMobile &&
+  rbxModalClose
+) {
+  rbxModalClose.style.top = "10px";
+  rbxModalClose.style.right = "10px";
+  rbxModalClose.style.zIndex = "20";
 }
 
-async function loadRobloxAvatar() {
-  if (!rbxAvatar) {
-    return;
-  }
-
-  try {
-    const data =
-      await fetchRobloxJSON(
-        `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${ROBLOX_USER_ID}&size=420x420&format=Png&isCircular=false`
-      );
-
-    const image =
-      data?.data?.[0]?.imageUrl;
-
-    if (image) {
-      rbxAvatar.src =
-        image;
-    }
-  } catch (_) {
-    rbxAvatar.src =
-      `https://www.roblox.com/headshot-thumbnail/image?userId=${ROBLOX_USER_ID}&width=420&height=420&format=png`;
-  }
-}
-
-async function loadRobloxProfile() {
-  if (!rbxModalUsername || !rbxModalStatusText) {
-    return;
-  }
-
-  try {
-    const data =
-      await fetchRobloxJSON(
-        `https://users.roblox.com/v1/users/${ROBLOX_USER_ID}`
-      );
-
-    rbxModalUsername.textContent =
-      data.displayName ||
-      data.name ||
-      "80vcv";
-
-    rbxModalStatusText.textContent =
-      data.name
-        ? `@${data.name}`
-        : "@80vcv";
-  } catch (_) {
-    rbxModalUsername.textContent =
-      "80vcv";
-
-    rbxModalStatusText.textContent =
-      "@80vcv";
-  }
-}
-
-async function loadRobloxFollowers() {
-  if (!rbxFollowersCount) {
+async function loadRobloxData() {
+  if (
+    !rbxAvatar ||
+    !rbxModalUsername ||
+    !rbxModalStatusText ||
+    !rbxFollowersCount ||
+    !rbxFriendsCount
+  ) {
     return;
   }
 
   rbxFollowersCount.textContent =
-    "—";
-
-  try {
-    const data =
-      await fetchRobloxJSON(
-        `https://friends.roblox.com/v1/users/${ROBLOX_USER_ID}/followers/count`
-      );
-
-    if (
-      typeof data.count ===
-      "number"
-    ) {
-      rbxFollowersCount.textContent =
-        data.count.toLocaleString();
-    }
-  } catch (_) {
-    rbxFollowersCount.textContent =
-      "—";
-  }
-}
-
-async function loadRobloxFriends() {
-  if (!rbxFriendsCount) {
-    return;
-  }
+    "…";
 
   rbxFriendsCount.textContent =
-    "—";
+    "…";
 
   try {
-    const data =
-      await fetchRobloxJSON(
-        `https://friends.roblox.com/v1/users/${ROBLOX_USER_ID}/friends/count`
+    const response =
+      await fetch(
+        ROBLOX_API,
+        {
+          cache: "no-store"
+        }
       );
 
-    if (
-      typeof data.count ===
-      "number"
-    ) {
-      rbxFriendsCount.textContent =
-        data.count.toLocaleString();
+    if (!response.ok) {
+      throw new Error(
+        `Worker HTTP ${response.status}`
+      );
     }
-  } catch (_) {
+
+    const data =
+      await response.json();
+
+    if (data.avatar) {
+      rbxAvatar.src =
+        data.avatar;
+    }
+
+    rbxModalUsername.textContent =
+      data.displayName ||
+      data.username ||
+      "80vcv";
+
+    rbxModalStatusText.textContent =
+      data.username
+        ? `@${data.username}`
+        : "@80vcv";
+
+    rbxFollowersCount.textContent =
+      typeof data.followers === "number"
+        ? data.followers.toLocaleString()
+        : "N/A";
+
     rbxFriendsCount.textContent =
-      "—";
+      typeof data.friends === "number"
+        ? data.friends.toLocaleString()
+        : "N/A";
+
+  } catch (error) {
+    console.error(
+      "Roblox Worker error:",
+      error
+    );
+
+    rbxFollowersCount.textContent =
+      "N/A";
+
+    rbxFriendsCount.textContent =
+      "N/A";
   }
 }
 
-async function loadRobloxData() {
-  await Promise.all([
-    loadRobloxAvatar(),
-    loadRobloxProfile(),
-    loadRobloxFollowers(),
-    loadRobloxFriends()
-  ]);
-}
-
-if (robloxLinkBtn && rbxModal) {
+if (
+  robloxLinkBtn &&
+  rbxModal
+) {
   robloxLinkBtn.addEventListener(
     "click",
     () => {
@@ -998,7 +950,10 @@ if (robloxLinkBtn && rbxModal) {
   );
 }
 
-if (rbxModalClose && rbxModal) {
+if (
+  rbxModalClose &&
+  rbxModal
+) {
   rbxModalClose.addEventListener(
     "click",
     () => {
