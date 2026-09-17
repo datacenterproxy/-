@@ -1129,7 +1129,7 @@
     const $ = selector => document.querySelector(selector);
     const $$ = selector => document.querySelectorAll(selector);
 
-    // Detect if user is on mobile
+    
     const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
 
     if (isMobile) {
@@ -1317,24 +1317,24 @@
     let countdownInterval = null;
     let currentCountdown = 3;
 
-    // Function to translate web URLs to app schemes on mobile devices
+ 
     function getOptimizedUrl(url, name) {
       if (!isMobile) return url;
 
       if (name === "Discord") {
-        // Extracts the user ID from https://discord.com/users/ID
+        
         const userIdMatch = url.match(/\/users\/(\d+)/);
         if (userIdMatch) {
           return `discord://-/users/${userIdMatch[1]}`;
         }
       } else if (name === "Telegram") {
-        // Converts https://t.me/username to tg://resolve?domain=username
+   
         const tgMatch = url.match(/t\.me\/([a-zA-Z0-9_]+)/);
         if (tgMatch) {
           return `tg://resolve?domain=${tgMatch[1]}`;
         }
       } else if (name === "Roblox") {
-        // Converts Roblox profile link to app scheme format
+        
         const rbxMatch = url.match(/\/users\/(\d+)/);
         if (rbxMatch) {
           return `roblox://navigation/profile?userId=${rbxMatch[1]}`;
