@@ -233,7 +233,7 @@ $$(
   ".redirect-cancel-btn, .dc-modal-close, .dc-add-btn, " +
   ".tg-modal-close, .tg-add-btn, .tg-avatar-wrap, " +
   ".dc-avatar-wrap, .dc-modal-username, .tg-modal-username, " +
-  ".rbx-modal-close, .rbx-avatar-wrap, .ctx-item"
+  ".rbx-modal-close, .rbx-avatar-wrap, .rbx-add-btn, .ctx-item"
 ).forEach(el => {
   el.addEventListener(
     "mouseenter",
@@ -352,7 +352,7 @@ function triggerRedirectPrompt(
     );
 
   pendingName = name;
-  pendingIcon = icon;
+  pendingIcon = icon || "";
 
   confirmBox.style.opacity = "1";
   confirmBox.style.pointerEvents = "auto";
@@ -388,6 +388,8 @@ $$("a.link").forEach(link => {
 function resetConfirmationState() {
   isRedirecting = false;
   pendingUrl = null;
+  pendingName = "";
+  pendingIcon = "";
 
   clearInterval(
     countdownInterval
@@ -402,6 +404,10 @@ function resetConfirmationState() {
   confirmOverlay.classList.remove(
     "visible"
   );
+
+  if (redirectIcon) {
+    redirectIcon.src = "";
+  }
 
   setTimeout(() => {
     confirmBox.style.opacity = "1";
@@ -442,8 +448,12 @@ continueButton.addEventListener(
 
     currentCountdown = 3;
 
-    redirectIcon.src =
-      pendingIcon;
+    if (redirectIcon) {
+      redirectIcon.src =
+        pendingIcon || "";
+      redirectIcon.style.display =
+        pendingIcon ? "block" : "none";
+    }
 
     redirectText.textContent =
       `Redirecting to ${pendingName} in ${currentCountdown}...`;
@@ -822,6 +832,9 @@ tgModalUsername.addEventListener(
 const ROBLOX_USER_ID =
   "7626940077";
 
+const ROBLOX_PROFILE_URL =
+  "https://www.roblox.com/users/7626940077/profile";
+
 const ROBLOX_API =
   "https://robloxapilmao.yukiriskingitfs.workers.dev/roblox/7626940077";
 
@@ -833,6 +846,9 @@ const rbxModal =
 
 const rbxModalClose =
   $("#rbxModalClose");
+
+const rbxAddBtn =
+  $("#rbxAddBtn");
 
 const rbxAvatar =
   $("#rbxAvatar");
@@ -975,6 +991,27 @@ if (rbxModal) {
           "visible"
         );
       }
+    }
+  );
+}
+
+if (rbxAddBtn) {
+  rbxAddBtn.addEventListener(
+    "click",
+    () => {
+      rbxModal.classList.remove(
+        "visible"
+      );
+
+      triggerRedirectPrompt(
+        ROBLOX_PROFILE_URL,
+        "Roblox",
+        robloxLinkBtn
+          ? robloxLinkBtn.getAttribute(
+              "data-icon"
+            )
+          : ""
+      );
     }
   );
 }
