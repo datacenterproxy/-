@@ -70,13 +70,9 @@ function startIntroSequence() {
             typeWrap.classList.add("visible");
             typeText();
           }, 600);
-
         }, 1600);
-
       }, 600);
-
     }, 1800);
-
   }, 400);
 }
 
@@ -162,7 +158,6 @@ async function enterSite() {
     }
 
     await video.play();
-
   } catch (_) {}
 
   intro.classList.add("hidden");
@@ -176,7 +171,6 @@ async function enterSite() {
         revealButtons
       );
     }, 250);
-
   }, 150);
 }
 
@@ -241,7 +235,6 @@ $$(
   ".dc-avatar-wrap, .dc-modal-username, .tg-modal-username, " +
   ".rbx-modal-close, .rbx-avatar-wrap, .rbx-add-btn, .ctx-item"
 ).forEach(el => {
-
   el.addEventListener(
     "mouseenter",
     () => {
@@ -263,7 +256,6 @@ $$(
         "drop-shadow(0 0 3px rgba(255,255,255,.15))";
     }
   );
-
 });
 
 if (volumeSlider) {
@@ -378,7 +370,6 @@ $$("a.link").forEach(link => {
   link.addEventListener(
     "click",
     event => {
-
       if (isRedirecting) {
         return;
       }
@@ -436,7 +427,6 @@ redirectCancelBtn.addEventListener(
 continueButton.addEventListener(
   "click",
   () => {
-
     if (
       !pendingUrl ||
       isRedirecting
@@ -464,16 +454,12 @@ continueButton.addEventListener(
 
     countdownInterval =
       setInterval(() => {
-
         currentCountdown--;
 
         if (currentCountdown > 0) {
-
           redirectText.textContent =
             `Redirecting to ${pendingName} in ${currentCountdown}...`;
-
         } else {
-
           clearInterval(
             countdownInterval
           );
@@ -481,7 +467,6 @@ continueButton.addEventListener(
           window.location.href =
             pendingUrl;
         }
-
       }, 1000);
   }
 );
@@ -489,14 +474,12 @@ continueButton.addEventListener(
 confirmOverlay.addEventListener(
   "click",
   event => {
-
     if (
       event.target === confirmOverlay &&
       !isRedirecting
     ) {
       resetConfirmationState();
     }
-
   }
 );
 
@@ -511,7 +494,6 @@ function copyUsername(
   navigator.clipboard.writeText(
     text.replace(/^@/, "")
   ).then(() => {
-
     toast.classList.add(
       "show"
     );
@@ -521,7 +503,6 @@ function copyUsername(
         "show"
       );
     }, 1800);
-
   }).catch(() => {});
 }
 
@@ -569,7 +550,6 @@ dcModalClose.addEventListener(
 dcModal.addEventListener(
   "click",
   event => {
-
     if (
       event.target === dcModal
     ) {
@@ -577,14 +557,12 @@ dcModal.addEventListener(
         "visible"
       );
     }
-
   }
 );
 
 dcAddBtn.addEventListener(
   "click",
   () => {
-
     dcModal.classList.remove(
       "visible"
     );
@@ -615,7 +593,6 @@ dcModalUsername.addEventListener(
 
 async function fetchDiscordStatus() {
   try {
-
     const response =
       await fetch(
         `https://api.lanyard.rest/v1/users/${DISCORD_ID}`
@@ -674,7 +651,6 @@ async function fetchDiscordStatus() {
     if (
       data.listening_to_spotify
     ) {
-
       actIcon.style.display =
         "block";
 
@@ -697,7 +673,6 @@ async function fetchDiscordStatus() {
       data.activities &&
       data.activities.length
     ) {
-
       const act =
         data.activities.find(
           a => a.type !== 4
@@ -708,7 +683,6 @@ async function fetchDiscordStatus() {
         act &&
         act.name
       ) {
-
         actName.textContent =
           act.name;
 
@@ -716,16 +690,13 @@ async function fetchDiscordStatus() {
           act.details ||
           act.state
         ) {
-
           actDesc.style.display =
             "block";
 
           actDesc.textContent =
             act.details ||
             act.state;
-
         } else {
-
           actDesc.style.display =
             "none";
         }
@@ -734,7 +705,6 @@ async function fetchDiscordStatus() {
           act.assets &&
           act.assets.large_image
         ) {
-
           actIcon.style.display =
             "block";
 
@@ -743,18 +713,13 @@ async function fetchDiscordStatus() {
               "spotify:"
             )
           ) {
-
             actIcon.src =
               `https://i.scdn.co/image/${act.assets.large_image.replace("spotify:", "")}`;
-
           } else {
-
             actIcon.src =
               `https://cdn.discordapp.com/app-assets/${act.application_id}/${act.assets.large_image}.png`;
           }
-
         } else {
-
           actIcon.style.display =
             "none";
         }
@@ -771,7 +736,6 @@ async function fetchDiscordStatus() {
 
     actDesc.style.display =
       "none";
-
   } catch (_) {}
 }
 
@@ -814,7 +778,6 @@ tgModalClose.addEventListener(
 tgModal.addEventListener(
   "click",
   event => {
-
     if (
       event.target === tgModal
     ) {
@@ -822,14 +785,12 @@ tgModal.addEventListener(
         "visible"
       );
     }
-
   }
 );
 
 tgAddBtn.addEventListener(
   "click",
   () => {
-
     tgModal.classList.remove(
       "visible"
     );
@@ -873,9 +834,6 @@ const rbxModal =
 const rbxModalClose =
   $("#rbxModalClose");
 
-const rbxAddBtn =
-  $("#rbxAddBtn");
-
 const rbxAvatar =
   $("#rbxAvatar");
 
@@ -886,9 +844,11 @@ const rbxModalStatusText =
   $("#rbxModalStatusText");
 
 const rbxFollowersCount =
+  $("#rbxFollowerCount") ||
   $("#rbxFollowersCount");
 
 const rbxFriendsCount =
+  $("#rbxFriendCount") ||
   $("#rbxFriendsCount");
 
 async function fetchRobloxJSON(url) {
@@ -910,31 +870,35 @@ async function fetchRobloxJSON(url) {
 }
 
 async function loadRobloxAvatar() {
-  try {
+  if (!rbxAvatar) {
+    return;
+  }
 
+  try {
     const data =
       await fetchRobloxJSON(
         `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${ROBLOX_USER_ID}&size=420x420&format=Png&isCircular=false`
       );
 
     const image =
-      data.data?.[0]?.imageUrl;
+      data?.data?.[0]?.imageUrl;
 
     if (image) {
       rbxAvatar.src =
         image;
     }
-
   } catch (_) {
-
     rbxAvatar.src =
       `https://www.roblox.com/headshot-thumbnail/image?userId=${ROBLOX_USER_ID}&width=420&height=420&format=png`;
   }
 }
 
 async function loadRobloxProfile() {
-  try {
+  if (!rbxModalUsername || !rbxModalStatusText) {
+    return;
+  }
 
+  try {
     const data =
       await fetchRobloxJSON(
         `https://users.roblox.com/v1/users/${ROBLOX_USER_ID}`
@@ -949,9 +913,7 @@ async function loadRobloxProfile() {
       data.name
         ? `@${data.name}`
         : "@80vcv";
-
   } catch (_) {
-
     rbxModalUsername.textContent =
       "80vcv";
 
@@ -960,51 +922,57 @@ async function loadRobloxProfile() {
   }
 }
 
-async function loadRobloxCounts() {
+async function loadRobloxFollowers() {
+  if (!rbxFollowersCount) {
+    return;
+  }
+
   rbxFollowersCount.textContent =
     "—";
+
+  try {
+    const data =
+      await fetchRobloxJSON(
+        `https://friends.roblox.com/v1/users/${ROBLOX_USER_ID}/followers/count`
+      );
+
+    if (
+      typeof data.count ===
+      "number"
+    ) {
+      rbxFollowersCount.textContent =
+        data.count.toLocaleString();
+    }
+  } catch (_) {
+    rbxFollowersCount.textContent =
+      "—";
+  }
+}
+
+async function loadRobloxFriends() {
+  if (!rbxFriendsCount) {
+    return;
+  }
 
   rbxFriendsCount.textContent =
     "—";
 
-  const followerRequest =
-    fetchRobloxJSON(
-      `https://friends.roblox.com/v1/users/${ROBLOX_USER_ID}/followers/count`
-    );
+  try {
+    const data =
+      await fetchRobloxJSON(
+        `https://friends.roblox.com/v1/users/${ROBLOX_USER_ID}/friends/count`
+      );
 
-  const friendRequest =
-    fetchRobloxJSON(
-      `https://friends.roblox.com/v1/users/${ROBLOX_USER_ID}/friends/count`
-    );
-
-  const [
-    followerResult,
-    friendResult
-  ] = await Promise.allSettled([
-    followerRequest,
-    friendRequest
-  ]);
-
-  if (
-    followerResult.status ===
-    "fulfilled" &&
-    typeof followerResult.value.count ===
-    "number"
-  ) {
-
-    rbxFollowersCount.textContent =
-      followerResult.value.count.toLocaleString();
-  }
-
-  if (
-    friendResult.status ===
-    "fulfilled" &&
-    typeof friendResult.value.count ===
-    "number"
-  ) {
-
+    if (
+      typeof data.count ===
+      "number"
+    ) {
+      rbxFriendsCount.textContent =
+        data.count.toLocaleString();
+    }
+  } catch (_) {
     rbxFriendsCount.textContent =
-      friendResult.value.count.toLocaleString();
+      "—";
   }
 }
 
@@ -1012,54 +980,49 @@ async function loadRobloxData() {
   await Promise.all([
     loadRobloxAvatar(),
     loadRobloxProfile(),
-    loadRobloxCounts()
+    loadRobloxFollowers(),
+    loadRobloxFriends()
   ]);
 }
 
-robloxLinkBtn.addEventListener(
-  "click",
-  () => {
+if (robloxLinkBtn && rbxModal) {
+  robloxLinkBtn.addEventListener(
+    "click",
+    () => {
+      rbxModal.classList.add(
+        "visible"
+      );
 
-    rbxModal.classList.add(
-      "visible"
-    );
+      loadRobloxData();
+    }
+  );
+}
 
-    loadRobloxData();
-  }
-);
-
-rbxModalClose.addEventListener(
-  "click",
-  () => {
-    rbxModal.classList.remove(
-      "visible"
-    );
-  }
-);
-
-rbxModal.addEventListener(
-  "click",
-  event => {
-
-    if (
-      event.target === rbxModal
-    ) {
-
+if (rbxModalClose && rbxModal) {
+  rbxModalClose.addEventListener(
+    "click",
+    () => {
       rbxModal.classList.remove(
         "visible"
       );
     }
+  );
+}
 
-  }
-);
-
-rbxAddBtn.addEventListener(
-  "click",
-  () => {
-    window.location.href =
-      ROBLOX_PROFILE_URL;
-  }
-);
+if (rbxModal) {
+  rbxModal.addEventListener(
+    "click",
+    event => {
+      if (
+        event.target === rbxModal
+      ) {
+        rbxModal.classList.remove(
+          "visible"
+        );
+      }
+    }
+  );
+}
 
 const customCtxMenu =
   $("#customCtxMenu");
@@ -1076,7 +1039,6 @@ const ctxReloadPage =
 document.addEventListener(
   "contextmenu",
   event => {
-
     event.preventDefault();
 
     const x =
@@ -1111,25 +1073,21 @@ document.addEventListener(
 document.addEventListener(
   "click",
   event => {
-
     if (
       !customCtxMenu.contains(
         event.target
       )
     ) {
-
       customCtxMenu.classList.remove(
         "visible"
       );
     }
-
   }
 );
 
 ctxToggleAudio.addEventListener(
   "click",
   () => {
-
     if (video.paused) {
       video.play();
     } else {
@@ -1154,7 +1112,6 @@ function setupTilt(
   maxTilt,
   scale
 ) {
-
   const el =
     $(selector);
 
@@ -1181,7 +1138,6 @@ function setupTilt(
   window.addEventListener(
     "mousemove",
     event => {
-
       if (!entered) {
         return;
       }
@@ -1225,20 +1181,16 @@ function setupTilt(
         insideY >= 0 &&
         insideY <= 1
       ) {
-
         hovered = true;
 
         if (glare) {
-
           glare.style.opacity =
             "1";
 
           glare.style.background =
             `radial-gradient(circle at ${insideX * 100}% ${insideY * 100}%, rgba(255, 255, 255, 0.28), transparent 60%)`;
         }
-
       } else {
-
         hovered = false;
 
         if (glare) {
@@ -1252,7 +1204,6 @@ function setupTilt(
   document.addEventListener(
     "mouseleave",
     () => {
-
       targetX = 0;
       targetY = 0;
       hovered = false;
@@ -1265,7 +1216,6 @@ function setupTilt(
   );
 
   function update() {
-
     currentX +=
       (targetX - currentX) *
       0.12;
@@ -1275,7 +1225,6 @@ function setupTilt(
       0.12;
 
     if (entered) {
-
       const s =
         hovered
           ? scale
@@ -1333,7 +1282,6 @@ const pfpViewerClose =
   );
 
 function openPfpViewer(img) {
-
   if (
     !img ||
     !img.src
@@ -1359,7 +1307,6 @@ function openPfpViewer(img) {
 }
 
 function closePfpViewer() {
-
   pfpViewer.classList.remove(
     "active"
   );
@@ -1374,25 +1321,21 @@ function closePfpViewer() {
   "tgAvatarBtn",
   "rbxAvatarWrap"
 ].forEach(id => {
-
   const el =
     document.getElementById(
       id
     );
 
   if (el) {
-
     el.addEventListener(
       "click",
       event => {
-
         const img =
           el.querySelector(
             "img"
           );
 
         if (img) {
-
           event.stopPropagation();
 
           openPfpViewer(
@@ -1412,26 +1355,22 @@ pfpViewerClose.addEventListener(
 pfpViewer.addEventListener(
   "click",
   event => {
-
     if (
       event.target === pfpViewer
     ) {
       closePfpViewer();
     }
-
   }
 );
 
 document.addEventListener(
   "keydown",
   event => {
-
     if (
       event.key === "Escape"
     ) {
       closePfpViewer();
     }
-
   }
 );
 
@@ -1441,7 +1380,6 @@ let pfpStartDistance = 0;
 pfpViewerImage.addEventListener(
   "dblclick",
   () => {
-
     pfpViewerImage.classList.toggle(
       "zoomed"
     );
@@ -1461,7 +1399,6 @@ pfpViewerImage.addEventListener(
 pfpViewerImage.addEventListener(
   "wheel",
   event => {
-
     event.preventDefault();
 
     pfpScale =
@@ -1483,7 +1420,6 @@ pfpViewerImage.addEventListener(
 
     pfpViewerImage.style.transform =
       `scale(${pfpScale})`;
-
   },
   {
     passive: false
@@ -1493,11 +1429,9 @@ pfpViewerImage.addEventListener(
 pfpViewerImage.addEventListener(
   "touchstart",
   event => {
-
     if (
       event.touches.length === 2
     ) {
-
       pfpStartDistance =
         Math.hypot(
           event.touches[0].clientX -
@@ -1507,14 +1441,12 @@ pfpViewerImage.addEventListener(
             event.touches[1].clientY
         );
     }
-
   }
 );
 
 pfpViewerImage.addEventListener(
   "touchmove",
   event => {
-
     if (
       event.touches.length !== 2 ||
       !pfpStartDistance
@@ -1554,7 +1486,6 @@ pfpViewerImage.addEventListener(
 
     pfpViewerImage.style.transform =
       `scale(${pfpScale})`;
-
   },
   {
     passive: false
@@ -1562,21 +1493,17 @@ pfpViewerImage.addEventListener(
 );
 
 if (isMobile) {
-
   document
     .querySelectorAll("*")
     .forEach(el => {
-
       if (
         el.children.length === 0 &&
         /you may need to lower your volume/i.test(
           el.textContent || ""
         )
       ) {
-
         el.style.display =
           "block";
       }
-
     });
 }
